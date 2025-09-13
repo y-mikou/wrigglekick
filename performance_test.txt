@@ -1,0 +1,602 @@
+.	Node 1	0	
+Content for node 1 with substantial text content to simulate real usage scenarios and test performance improvements.
+
+..	Subnode 10	1	☑
+Subcontent for testing nested structures and verifying optimization works correctly with hierarchical data.
+
+.	Node 2	1	
+Content for node 2 with comprehensive text content for performance testing and verification of search optimizations.
+
+.	Node 3	0	
+Content for node 3 with extensive text for testing node search performance and ensuring functionality is preserved.
+
+.	Node 4	1	☑
+Content for node 4 with detailed text content to verify that the optimization maintains all existing functionality.
+
+.	Node 5	0	
+Content for node 5 with substantial text for verification of performance improvements in node search operations.
+
+.	Node 6	1	
+Content for node 6 with comprehensive content to test the optimized node indexing and search functionality.
+
+.	Node 7	0	
+Content for node 7 with extensive text for testing performance improvements and ensuring backward compatibility.
+
+.	Node 8	1	☑
+Content for node 8 with detailed text content to verify optimization works with various node configurations.
+
+.	Node 9	0	
+Content for node 9 with substantial text for verification of search performance improvements and functionality.
+
+..	Subnode 20	1	☑
+Subcontent for testing nested structures and verifying optimization works correctly with hierarchical data.
+
+.	Node 11	0	
+Content for node 11 with comprehensive text content for performance testing and verification of search optimizations.
+
+.	Node 12	1	
+Content for node 12 with extensive text for testing node search performance and ensuring functionality is preserved.
+
+.	Node 13	0	
+Content for node 13 with detailed text content to verify that the optimization maintains all existing functionality.
+
+.	Node 14	1	☑
+Content for node 14 with substantial text for verification of performance improvements in node search operations.
+
+.	Node 15	0	
+Content for node 15 with comprehensive content to test the optimized node indexing and search functionality.
+
+.	Node 16	1	
+Content for node 16 with extensive text for testing performance improvements and ensuring backward compatibility.
+
+.	Node 17	0	
+Content for node 17 with detailed text content to verify optimization works with various node configurations.
+
+.	Node 18	1	☑
+Content for node 18 with substantial text for verification of search performance improvements and functionality.
+
+.	Node 19	0	
+Content for node 19 with comprehensive text content for performance testing and verification of search optimizations.
+
+..	Subnode 30	1	☑
+Subcontent for testing nested structures and verifying optimization works correctly with hierarchical data.
+
+.	Node 21	0	
+Content for node 21 with extensive text for testing node search performance and ensuring functionality is preserved.
+
+.	Node 22	1	
+Content for node 22 with detailed text content to verify that the optimization maintains all existing functionality.
+
+.	Node 23	0	
+Content for node 23 with substantial text for verification of performance improvements in node search operations.
+
+.	Node 24	1	☑
+Content for node 24 with comprehensive content to test the optimized node indexing and search functionality.
+
+.	Node 25	0	
+Content for node 25 with extensive text for testing performance improvements and ensuring backward compatibility.
+
+.	Node 26	1	
+Content for node 26 with detailed text content to verify optimization works with various node configurations.
+
+.	Node 27	0	
+Content for node 27 with substantial text for verification of search performance improvements and functionality.
+
+.	Node 28	1	☑
+Content for node 28 with comprehensive text content for performance testing and verification of search optimizations.
+
+.	Node 29	0	
+Content for node 29 with extensive text for testing node search performance and ensuring functionality is preserved.
+
+..	Subnode 40	1	☑
+Subcontent for testing nested structures and verifying optimization works correctly with hierarchical data.
+
+.	Node 31	0	
+Content for node 31 with detailed text content to verify that the optimization maintains all existing functionality.
+
+.	Node 32	1	
+Content for node 32 with substantial text for verification of performance improvements in node search operations.
+
+.	Node 33	0	
+Content for node 33 with comprehensive content to test the optimized node indexing and search functionality.
+
+.	Node 34	1	☑
+Content for node 34 with extensive text for testing performance improvements and ensuring backward compatibility.
+
+.	Node 35	0	
+Content for node 35 with detailed text content to verify optimization works with various node configurations.
+
+.	Node 36	1	
+Content for node 36 with substantial text for verification of search performance improvements and functionality.
+
+.	Node 37	0	
+Content for node 37 with comprehensive text content for performance testing and verification of search optimizations.
+
+.	Node 38	1	☑
+Content for node 38 with extensive text for testing node search performance and ensuring functionality is preserved.
+
+.	Node 39	0	
+Content for node 39 with detailed text content to verify that the optimization maintains all existing functionality.
+
+..	Subnode 50	1	☑
+Subcontent for testing nested structures and verifying optimization works correctly with hierarchical data.
+
+.	Node 41	0	
+Content for node 41 with substantial text for verification of performance improvements in node search operations.
+
+.	Node 42	1	
+Content for node 42 with comprehensive content to test the optimized node indexing and search functionality.
+
+.	Node 43	0	
+Content for node 43 with extensive text for testing performance improvements and ensuring backward compatibility.
+
+.	Node 44	1	☑
+Content for node 44 with detailed text content to verify optimization works with various node configurations.
+
+.	Node 45	0	
+Content for node 45 with substantial text for verification of search performance improvements and functionality.
+
+.	Node 46	1	
+Content for node 46 with comprehensive text content for performance testing and verification of search optimizations.
+
+.	Node 47	0	
+Content for node 47 with extensive text for testing node search performance and ensuring functionality is preserved.
+
+.	Node 48	1	☑
+Content for node 48 with detailed text content to verify that the optimization maintains all existing functionality.
+
+.	Node 49	0	
+Content for node 49 with substantial text for verification of performance improvements in node search operations.
+
+..	Subnode 60	1	☑
+Subcontent for testing nested structures and verifying optimization works correctly with hierarchical data.
+
+.	Node 51	0	
+Content for node 51 with comprehensive content to test the optimized node indexing and search functionality.
+
+.	Node 52	1	
+Content for node 52 with extensive text for testing performance improvements and ensuring backward compatibility.
+
+.	Node 53	0	
+Content for node 53 with detailed text content to verify optimization works with various node configurations.
+
+.	Node 54	1	☑
+Content for node 54 with substantial text for verification of search performance improvements and functionality.
+
+.	Node 55	0	
+Content for node 55 with comprehensive text content for performance testing and verification of search optimizations.
+
+.	Node 56	1	
+Content for node 56 with extensive text for testing node search performance and ensuring functionality is preserved.
+
+.	Node 57	0	
+Content for node 57 with detailed text content to verify that the optimization maintains all existing functionality.
+
+.	Node 58	1	☑
+Content for node 58 with substantial text for verification of performance improvements in node search operations.
+
+.	Node 59	0	
+Content for node 59 with comprehensive content to test the optimized node indexing and search functionality.
+
+..	Subnode 70	1	☑
+Subcontent for testing nested structures and verifying optimization works correctly with hierarchical data.
+
+.	Node 61	0	
+Content for node 61 with extensive text for testing performance improvements and ensuring backward compatibility.
+
+.	Node 62	1	
+Content for node 62 with detailed text content to verify optimization works with various node configurations.
+
+.	Node 63	0	
+Content for node 63 with substantial text for verification of search performance improvements and functionality.
+
+.	Node 64	1	☑
+Content for node 64 with comprehensive text content for performance testing and verification of search optimizations.
+
+.	Node 65	0	
+Content for node 65 with extensive text for testing node search performance and ensuring functionality is preserved.
+
+.	Node 66	1	
+Content for node 66 with detailed text content to verify that the optimization maintains all existing functionality.
+
+.	Node 67	0	
+Content for node 67 with substantial text for verification of performance improvements in node search operations.
+
+.	Node 68	1	☑
+Content for node 68 with comprehensive content to test the optimized node indexing and search functionality.
+
+.	Node 69	0	
+Content for node 69 with extensive text for testing performance improvements and ensuring backward compatibility.
+
+..	Subnode 80	1	☑
+Subcontent for testing nested structures and verifying optimization works correctly with hierarchical data.
+
+.	Node 71	0	
+Content for node 71 with detailed text content to verify optimization works with various node configurations.
+
+.	Node 72	1	
+Content for node 72 with substantial text for verification of search performance improvements and functionality.
+
+.	Node 73	0	
+Content for node 73 with comprehensive text content for performance testing and verification of search optimizations.
+
+.	Node 74	1	☑
+Content for node 74 with extensive text for testing node search performance and ensuring functionality is preserved.
+
+.	Node 75	0	
+Content for node 75 with detailed text content to verify that the optimization maintains all existing functionality.
+
+.	Node 76	1	
+Content for node 76 with substantial text for verification of performance improvements in node search operations.
+
+.	Node 77	0	
+Content for node 77 with comprehensive content to test the optimized node indexing and search functionality.
+
+.	Node 78	1	☑
+Content for node 78 with extensive text for testing performance improvements and ensuring backward compatibility.
+
+.	Node 79	0	
+Content for node 79 with detailed text content to verify optimization works with various node configurations.
+
+..	Subnode 90	1	☑
+Subcontent for testing nested structures and verifying optimization works correctly with hierarchical data.
+
+.	Node 81	0	
+Content for node 81 with substantial text for verification of search performance improvements and functionality.
+
+.	Node 82	1	
+Content for node 82 with comprehensive text content for performance testing and verification of search optimizations.
+
+.	Node 83	0	
+Content for node 83 with extensive text for testing node search performance and ensuring functionality is preserved.
+
+.	Node 84	1	☑
+Content for node 84 with detailed text content to verify that the optimization maintains all existing functionality.
+
+.	Node 85	0	
+Content for node 85 with substantial text for verification of performance improvements in node search operations.
+
+.	Node 86	1	
+Content for node 86 with comprehensive content to test the optimized node indexing and search functionality.
+
+.	Node 87	0	
+Content for node 87 with extensive text for testing performance improvements and ensuring backward compatibility.
+
+.	Node 88	1	☑
+Content for node 88 with detailed text content to verify optimization works with various node configurations.
+
+.	Node 89	0	
+Content for node 89 with substantial text for verification of search performance improvements and functionality.
+
+..	Subnode 100	1	☑
+Subcontent for testing nested structures and verifying optimization works correctly with hierarchical data.
+
+.	Node 91	0	
+Content for node 91 with comprehensive text content for performance testing and verification of search optimizations.
+
+.	Node 92	1	
+Content for node 92 with extensive text for testing node search performance and ensuring functionality is preserved.
+
+.	Node 93	0	
+Content for node 93 with detailed text content to verify that the optimization maintains all existing functionality.
+
+.	Node 94	1	☑
+Content for node 94 with substantial text for verification of performance improvements in node search operations.
+
+.	Node 95	0	
+Content for node 95 with comprehensive content to test the optimized node indexing and search functionality.
+
+.	Node 96	1	
+Content for node 96 with extensive text for testing performance improvements and ensuring backward compatibility.
+
+.	Node 97	0	
+Content for node 97 with detailed text content to verify optimization works with various node configurations.
+
+.	Node 98	1	☑
+Content for node 98 with substantial text for verification of search performance improvements and functionality.
+
+.	Node 99	0	
+Content for node 99 with comprehensive text content for performance testing and verification of search optimizations.
+
+..	Subnode 110	1	☑
+Subcontent for testing nested structures and verifying optimization works correctly with hierarchical data.
+
+.	Node 101	0	
+Content for node 101 with extensive text for testing node search performance and ensuring functionality is preserved.
+
+.	Node 102	1	
+Content for node 102 with detailed text content to verify that the optimization maintains all existing functionality.
+
+.	Node 103	0	
+Content for node 103 with substantial text for verification of performance improvements in node search operations.
+
+.	Node 104	1	☑
+Content for node 104 with comprehensive content to test the optimized node indexing and search functionality.
+
+.	Node 105	0	
+Content for node 105 with extensive text for testing performance improvements and ensuring backward compatibility.
+
+.	Node 106	1	
+Content for node 106 with detailed text content to verify optimization works with various node configurations.
+
+.	Node 107	0	
+Content for node 107 with substantial text for verification of search performance improvements and functionality.
+
+.	Node 108	1	☑
+Content for node 108 with comprehensive text content for performance testing and verification of search optimizations.
+
+.	Node 109	0	
+Content for node 109 with extensive text for testing node search performance and ensuring functionality is preserved.
+
+..	Subnode 120	1	☑
+Subcontent for testing nested structures and verifying optimization works correctly with hierarchical data.
+
+.	Node 111	0	
+Content for node 111 with detailed text content to verify that the optimization maintains all existing functionality.
+
+.	Node 112	1	
+Content for node 112 with substantial text for verification of performance improvements in node search operations.
+
+.	Node 113	0	
+Content for node 113 with comprehensive content to test the optimized node indexing and search functionality.
+
+.	Node 114	1	☑
+Content for node 114 with extensive text for testing performance improvements and ensuring backward compatibility.
+
+.	Node 115	0	
+Content for node 115 with detailed text content to verify optimization works with various node configurations.
+
+.	Node 116	1	
+Content for node 116 with substantial text for verification of search performance improvements and functionality.
+
+.	Node 117	0	
+Content for node 117 with comprehensive text content for performance testing and verification of search optimizations.
+
+.	Node 118	1	☑
+Content for node 118 with extensive text for testing node search performance and ensuring functionality is preserved.
+
+.	Node 119	0	
+Content for node 119 with detailed text content to verify that the optimization maintains all existing functionality.
+
+..	Subnode 130	1	☑
+Subcontent for testing nested structures and verifying optimization works correctly with hierarchical data.
+
+.	Node 121	0	
+Content for node 121 with substantial text for verification of performance improvements in node search operations.
+
+.	Node 122	1	
+Content for node 122 with comprehensive content to test the optimized node indexing and search functionality.
+
+.	Node 123	0	
+Content for node 123 with extensive text for testing performance improvements and ensuring backward compatibility.
+
+.	Node 124	1	☑
+Content for node 124 with detailed text content to verify optimization works with various node configurations.
+
+.	Node 125	0	
+Content for node 125 with substantial text for verification of search performance improvements and functionality.
+
+.	Node 126	1	
+Content for node 126 with comprehensive text content for performance testing and verification of search optimizations.
+
+.	Node 127	0	
+Content for node 127 with extensive text for testing node search performance and ensuring functionality is preserved.
+
+.	Node 128	1	☑
+Content for node 128 with detailed text content to verify that the optimization maintains all existing functionality.
+
+.	Node 129	0	
+Content for node 129 with substantial text for verification of performance improvements in node search operations.
+
+..	Subnode 140	1	☑
+Subcontent for testing nested structures and verifying optimization works correctly with hierarchical data.
+
+.	Node 131	0	
+Content for node 131 with comprehensive content to test the optimized node indexing and search functionality.
+
+.	Node 132	1	
+Content for node 132 with extensive text for testing performance improvements and ensuring backward compatibility.
+
+.	Node 133	0	
+Content for node 133 with detailed text content to verify optimization works with various node configurations.
+
+.	Node 134	1	☑
+Content for node 134 with substantial text for verification of search performance improvements and functionality.
+
+.	Node 135	0	
+Content for node 135 with comprehensive text content for performance testing and verification of search optimizations.
+
+.	Node 136	1	
+Content for node 136 with extensive text for testing node search performance and ensuring functionality is preserved.
+
+.	Node 137	0	
+Content for node 137 with detailed text content to verify that the optimization maintains all existing functionality.
+
+.	Node 138	1	☑
+Content for node 138 with substantial text for verification of performance improvements in node search operations.
+
+.	Node 139	0	
+Content for node 139 with comprehensive content to test the optimized node indexing and search functionality.
+
+..	Subnode 150	1	☑
+Subcontent for testing nested structures and verifying optimization works correctly with hierarchical data.
+
+.	Node 141	0	
+Content for node 141 with extensive text for testing performance improvements and ensuring backward compatibility.
+
+.	Node 142	1	
+Content for node 142 with detailed text content to verify optimization works with various node configurations.
+
+.	Node 143	0	
+Content for node 143 with substantial text for verification of search performance improvements and functionality.
+
+.	Node 144	1	☑
+Content for node 144 with comprehensive text content for performance testing and verification of search optimizations.
+
+.	Node 145	0	
+Content for node 145 with extensive text for testing node search performance and ensuring functionality is preserved.
+
+.	Node 146	1	
+Content for node 146 with detailed text content to verify that the optimization maintains all existing functionality.
+
+.	Node 147	0	
+Content for node 147 with substantial text for verification of performance improvements in node search operations.
+
+.	Node 148	1	☑
+Content for node 148 with comprehensive content to test the optimized node indexing and search functionality.
+
+.	Node 149	0	
+Content for node 149 with extensive text for testing performance improvements and ensuring backward compatibility.
+
+..	Subnode 160	1	☑
+Subcontent for testing nested structures and verifying optimization works correctly with hierarchical data.
+
+.	Node 151	0	
+Content for node 151 with detailed text content to verify optimization works with various node configurations.
+
+.	Node 152	1	
+Content for node 152 with substantial text for verification of search performance improvements and functionality.
+
+.	Node 153	0	
+Content for node 153 with comprehensive text content for performance testing and verification of search optimizations.
+
+.	Node 154	1	☑
+Content for node 154 with extensive text for testing node search performance and ensuring functionality is preserved.
+
+.	Node 155	0	
+Content for node 155 with detailed text content to verify that the optimization maintains all existing functionality.
+
+.	Node 156	1	
+Content for node 156 with substantial text for verification of performance improvements in node search operations.
+
+.	Node 157	0	
+Content for node 157 with comprehensive content to test the optimized node indexing and search functionality.
+
+.	Node 158	1	☑
+Content for node 158 with extensive text for testing performance improvements and ensuring backward compatibility.
+
+.	Node 159	0	
+Content for node 159 with detailed text content to verify optimization works with various node configurations.
+
+..	Subnode 170	1	☑
+Subcontent for testing nested structures and verifying optimization works correctly with hierarchical data.
+
+.	Node 161	0	
+Content for node 161 with substantial text for verification of search performance improvements and functionality.
+
+.	Node 162	1	
+Content for node 162 with comprehensive text content for performance testing and verification of search optimizations.
+
+.	Node 163	0	
+Content for node 163 with extensive text for testing node search performance and ensuring functionality is preserved.
+
+.	Node 164	1	☑
+Content for node 164 with detailed text content to verify that the optimization maintains all existing functionality.
+
+.	Node 165	0	
+Content for node 165 with substantial text for verification of performance improvements in node search operations.
+
+.	Node 166	1	
+Content for node 166 with comprehensive content to test the optimized node indexing and search functionality.
+
+.	Node 167	0	
+Content for node 167 with extensive text for testing performance improvements and ensuring backward compatibility.
+
+.	Node 168	1	☑
+Content for node 168 with detailed text content to verify optimization works with various node configurations.
+
+.	Node 169	0	
+Content for node 169 with substantial text for verification of search performance improvements and functionality.
+
+..	Subnode 180	1	☑
+Subcontent for testing nested structures and verifying optimization works correctly with hierarchical data.
+
+.	Node 171	0	
+Content for node 171 with comprehensive text content for performance testing and verification of search optimizations.
+
+.	Node 172	1	
+Content for node 172 with extensive text for testing node search performance and ensuring functionality is preserved.
+
+.	Node 173	0	
+Content for node 173 with detailed text content to verify that the optimization maintains all existing functionality.
+
+.	Node 174	1	☑
+Content for node 174 with substantial text for verification of performance improvements in node search operations.
+
+.	Node 175	0	
+Content for node 175 with comprehensive content to test the optimized node indexing and search functionality.
+
+.	Node 176	1	
+Content for node 176 with extensive text for testing performance improvements and ensuring backward compatibility.
+
+.	Node 177	0	
+Content for node 177 with detailed text content to verify optimization works with various node configurations.
+
+.	Node 178	1	☑
+Content for node 178 with substantial text for verification of search performance improvements and functionality.
+
+.	Node 179	0	
+Content for node 179 with comprehensive text content for performance testing and verification of search optimizations.
+
+..	Subnode 190	1	☑
+Subcontent for testing nested structures and verifying optimization works correctly with hierarchical data.
+
+.	Node 181	0	
+Content for node 181 with extensive text for testing node search performance and ensuring functionality is preserved.
+
+.	Node 182	1	
+Content for node 182 with detailed text content to verify that the optimization maintains all existing functionality.
+
+.	Node 183	0	
+Content for node 183 with substantial text for verification of performance improvements in node search operations.
+
+.	Node 184	1	☑
+Content for node 184 with comprehensive content to test the optimized node indexing and search functionality.
+
+.	Node 185	0	
+Content for node 185 with extensive text for testing performance improvements and ensuring backward compatibility.
+
+.	Node 186	1	
+Content for node 186 with detailed text content to verify optimization works with various node configurations.
+
+.	Node 187	0	
+Content for node 187 with substantial text for verification of search performance improvements and functionality.
+
+.	Node 188	1	☑
+Content for node 188 with comprehensive text content for performance testing and verification of search optimizations.
+
+.	Node 189	0	
+Content for node 189 with extensive text for testing node search performance and ensuring functionality is preserved.
+
+..	Subnode 200	1	☑
+Subcontent for testing nested structures and verifying optimization works correctly with hierarchical data.
+
+.	Node 191	0	
+Content for node 191 with detailed text content to verify that the optimization maintains all existing functionality.
+
+.	Node 192	1	
+Content for node 192 with substantial text for verification of performance improvements in node search operations.
+
+.	Node 193	0	
+Content for node 193 with comprehensive content to test the optimized node indexing and search functionality.
+
+.	Node 194	1	☑
+Content for node 194 with extensive text for testing performance improvements and ensuring backward compatibility.
+
+.	Node 195	0	
+Content for node 195 with detailed text content to verify optimization works with various node configurations.
+
+.	Node 196	1	
+Content for node 196 with substantial text for verification of search performance improvements and functionality.
+
+.	Node 197	0	
+Content for node 197 with comprehensive text content for performance testing and verification of search optimizations.
+
+.	Node 198	1	☑
+Content for node 198 with extensive text for testing node search performance and ensuring functionality is preserved.
+
+.	Node 199	0	
+Content for node 199 with detailed text content to verify that the optimization maintains all existing functionality.
+
+.	Node 200	1	☑
+Content for node 200 with substantial text for verification of performance improvements in node search operations.

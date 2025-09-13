@@ -1,0 +1,28 @@
+.	Root Node	0	
+Content for root
+.\tNew Node
+.\tTest Node
+..	Child Node	1	☑
+Child content
+
+...	Grandchild	0	
+Grandchild content
+..	Child Node	1	☑
+Child content
+.	Root Node	0	
+Content for root
+...	Grandchild	0	
+Grandchild content
+..	Child Node	1	☑
+Child content
+.	Root Node	0	
+Content for root
+.\tNew Node
+...	Grandchild	0	
+Grandchild content
+..	Child Node	1	☑
+Child content
+.	Root Node	0	
+Content for root
+...	Grandchild	0	
+Grandchild content

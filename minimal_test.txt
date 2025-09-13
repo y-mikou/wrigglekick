@@ -1,0 +1,8 @@
+.	Node 1	0	
+Content for node 1
+
+..	Node 2	1	☑
+Content for node 2
+
+.	Node 3	0	
+Content for node 3

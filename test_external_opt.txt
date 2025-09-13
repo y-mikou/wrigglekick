@@ -1,0 +1,11 @@
+.	First Node	0	
+Content for first node
+This is some content to test the functionality.
+
+..	Second Node	1	☑
+Content for second node
+More content here to verify the optimization works.
+
+...	Third Node	0	
+Content for third node
+Additional content for testing external process optimization.

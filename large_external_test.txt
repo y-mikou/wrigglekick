@@ -1,0 +1,35 @@
+.	Node 1	0	
+Content for node 1 with some text to make it larger and test performance.
+This is additional content to simulate a larger file for performance testing.
+
+..	Node 2	1	☑
+Content for node 2 with more text content.
+Additional lines to make the file bigger for testing purposes.
+
+...	Node 3	0	
+Content for node 3 with even more text.
+More content here to verify the optimization works with larger files.
+
+....	Node 4	0	
+Content for node 4 with substantial text content.
+This helps simulate real-world usage scenarios.
+
+.....	Node 5	1	
+Content for node 5 with comprehensive text.
+Testing the performance improvements with nested nodes.
+
+......	Node 6	0	
+Content for node 6 with extensive text content.
+Final node to complete the test file structure.
+
+.......	Node 7	0	
+Content for node 7 with additional text.
+More content to test the external process optimizations.
+
+........	Node 8	1	
+Content for node 8 with comprehensive content.
+Testing deeper nesting levels for performance.
+
+.........	Node 9	0	
+Content for node 9 with final test content.
+Last node to verify all optimizations work correctly.
