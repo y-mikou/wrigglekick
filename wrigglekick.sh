@@ -1,10 +1,69 @@
 #!/bin/bash
 
+declare -a fileContentCache=()
+declare cachedFileName=""
+declare cacheValid=false
+
 #エディタ、ビューワーの指定
 selected_editor='selected_editor'
                 #^^^^^^^^^^^^^^^ここにお好みのエディター呼び出しコマンドを設定してください
 selected_viewer='selected_viewer'
                 #^^^^^^^^^^^^^^^ここにお好みのビューワー呼び出しコマンドを設定してください
+
+: "外部プロセス最適化ユーティリティ" && {
+  function extractField {
+    local input="${1}"
+    local fieldNum="${2}"
+    local IFS=$'\t'
+    local -a fields=($input)
+    echo "${fields[$((fieldNum-1))]}"
+  }
+
+function arrayContains {
+    local target="${1}"
+    shift
+    local element
+    for element in "$@"; do
+      [[ "${element}" == "${target}" ]] && return 0
+    done
+    return 1
+  }
+
+  function countNonDotChars {
+    local input="${1}"
+    local cleaned="${input//[^$'\t']*$'\t'/}"
+    cleaned="${cleaned//$'\n'/}"
+    echo "${#cleaned}"
+
+: "ファイルキャッシュ系" && {
+  function loadFileCache {
+    local targetFile="${1}"
+    if [[ "${cachedFileName}" != "${targetFile}" ]] || [[ "${cacheValid}" != true ]]; then
+      readarray -t fileContentCache < "${targetFile}"
+      cachedFileName="${targetFile}"
+      cacheValid=true
+    fi
+  }
+
+  function invalidateCache {
+    cacheValid=false
+  }
+
+  function getCachedLines {
+    local startLine="${1}"
+    local endLine="${2}"
+    local i
+    for i in $(seq $((startLine-1)) $((endLine-1))); do
+      if [[ ${i} -lt ${#fileContentCache[@]} ]]; then
+        echo "${fileContentCache[${i}]}"
+      fi
+    done
+  }
+
+  function getCachedLineCount {
+    echo "${#fileContentCache[@]}"
+  }
+}
 
 : "ヘルプ表示" && {
   ##############################################################################
@@ -77,12 +136,19 @@ selected_viewer='selected_viewer'
     local depth
     local nextEntry
     local nextStartLine
-
-    readarray -t indexlist < <(grep -nP '^\.+\t.+' ${inputFile})
+    
+    loadFileCache "${inputFile}"
+    
+    #readarray -t indexlist < <(grep -nP '^\.+\t.+' ${inputFile})
+    readarray -t indexlist < <(printf '%s\n' "${fileContentCache[@]}" | grep -nP '^\.+\t.+')
+    
+    readarray -t fileLines < "${inputFile}"
 
     maxNodeCnt="${#indexlist[@]}"
-    maxLineCnt="$( cat "${inputFile}" | wc -l  )"
 
+    #maxLineCnt="${#fileLines[@]}"
+    maxLineCnt="$(getCachedLineCount)"
+    
     nodeStartLines=()
     nodeEndLines=()
     nodeDepths=()
@@ -108,8 +174,8 @@ selected_viewer='selected_viewer'
       depth="${depth%%[^.]*}"
       depth="${#depth}"
       
-      title="$( echo "${content}" | cut -f 2 )"
-      symbol="$( echo "${content}" | cut -f 4 )"
+      title="$(extractField "${content}" 2)"
+      symbol="$(extractField "${content}" 4)"
       symbol="${symbol:0:1}" #1文字のみ
       
       nodeStartLines+=("${startLine}")
@@ -118,24 +184,25 @@ selected_viewer='selected_viewer'
       nodeTitles+=("${title}")
       nodeSymbol+=("${symbol:=　}") #設定されていない場合には空白を一時的に設定
 
-      progress="$( echo "${content}" | cut -f 3 )"
+      progress="$(extractField "${content}" 3)"
       nodeProgress+=("${progress:=0}")
 
       #taかtlの場合以外はスキップする
 
       local countActionList=('tl' 'ta' 'fl' 'fa')
-      printf '%s\n' "${countActionList[@]}" | grep -qx "${action}"
-      if [[ ${?} -eq 0 ]] ; then
+      if arrayContains "${action}" "${countActionList[@]}"; then
         #次の行がすぐに次のノードタイトル行(純粋なタイトル行)の場合は0文字
         if [[ ${startLine} -eq ${endLine} ]] ; then
           charCount=0
         else
-          charCount="$( \
-            sed -n "${startLine},${endLine}p" "${inputFile}" \
-          | sed -E "s/^\..*//g" \
-          | sed -z "s/\n//g" \
-          | wc -m \
-          )"
+          local contentLines=""
+          for ((lineNum=startLine; lineNum<=endLine; lineNum++)); do
+            local line="${fileLines[$((lineNum-1))]}"
+            if [[ ! "${line}" =~ ^\. ]]; then
+              contentLines+="${line}"
+            fi
+          done
+          charCount="${#contentLines}"
         fi
         nodeCharCount+=("${charCount}")
       fi
@@ -163,13 +230,14 @@ selected_viewer='selected_viewer'
     local targetLineNo="${nodeStartLines[$((indexNo-1))]}"
     local presentTitlelineContent="$( getNodeTitlelineContent ${indexNo} )"
 
-    local part_before=$( echo "${presentTitlelineContent}" | cut -f 1-2 )
-    # local part_progress=$( echo "${presentTitlelineContent}" | cut -f 3 )
-    local part_after=$( echo "${presentTitlelineContent}" | cut -f 4- )
+    local part_before="$(extractField "${presentTitlelineContent}" 1)$(printf '\t')$(extractField "${presentTitlelineContent}" 2)"
+    # local part_progress="$(extractField "${presentTitlelineContent}" 3)"
+    local part_after="$(extractField "${presentTitlelineContent}" 4)"
 
     modifiedTitlelineContent="$( echo -e "${part_before}\t${modifiyProgress}\t${part_after}" )"
 
     sed -i "${targetLineNo} c ${modifiedTitlelineContent}" "${inputFile}"
+    invalidateCache
 
     bash "${0}" "${inputFile}" 'tl'
     exit 0
@@ -192,6 +260,7 @@ selected_viewer='selected_viewer'
     local modifiedTitlelineContent="$( echo -e "${part_before}\t${modifySymbol}" )"
 
     sed -i "${targetLineNo} c ${modifiedTitlelineContent}" "${inputFile}"
+    invalidateCache
 
     bash "${0}" "${inputFile}" 't'
     exit 0
@@ -262,7 +331,9 @@ selected_viewer='selected_viewer'
   ##############################################################################
   function getNodeTitlelineContent {
     local selectNodeLineNo="${nodeStartLines[ $(( ${1}-1 )) ]}"
-    sed -n ${selectNodeLineNo}p "${inputFile}"
+
+    echo "${fileLines[$((selectNodeLineNo-1))]}"
+
   }
 }
 
@@ -369,7 +440,7 @@ selected_viewer='selected_viewer'
     local startLineSelectGroup="$( getLineNo $( echo ${tgtGroup} | cut -d ' ' -f 1 ) 1 )"
     local endLineSelectGroup="$( getLineNo $( echo ${tgtGroup} | cut -d ' ' -f 2 ) 9 )"
 
-    cat "${inputFile}" | sed -sn "${startLineSelectGroup},${endLineSelectGroup}p" > "${tmpfileTarget}"
+    getCachedLines "${startLineSelectGroup}" "${endLineSelectGroup}" > "${tmpfileTarget}"
     "${selected_viewer}" "${tmpfileTarget}"
     bash "${0}" "${inputFile}" 't'
     exit 0
@@ -388,11 +459,15 @@ selected_viewer='selected_viewer'
 
     local lineStart="${1}"
     local lineEnd="${2}"
-
-      sed -n "${lineStart},${lineEnd}p" "${inputFile}" \
-    | sed -E "s/^\..*//g" \
-    | sed -z "s/\n//g" \
-    | wc -m \
+    
+    local contentLines=""
+    for ((lineNum=lineStart; lineNum<=lineEnd; lineNum++)); do
+      local line="${fileLines[$((lineNum-1))]}"
+      if [[ ! "${line}" =~ ^\. ]]; then
+        contentLines+="${line}"
+      fi
+    done
+    echo "${#contentLines}"
 
   }
   
@@ -585,8 +660,9 @@ selected_viewer='selected_viewer'
   function singleNodeOperations {
 
     selectNodeLineFromTo="$( getLineNo ${indexNo} '' )"
-    startLineSelectNode="$( echo ${selectNodeLineFromTo} | cut -d ' ' -f 1 )"
-    endLineSelectNode="$(   echo ${selectNodeLineFromTo} | cut -d ' ' -f 2 )"
+    local selectNodeArray=($selectNodeLineFromTo)
+    startLineSelectNode="${selectNodeArray[0]}"
+    endLineSelectNode="${selectNodeArray[1]}"
 
     endLineHeader="$(( ${startLineSelectNode} -1 ))"
     startLineFooter="$(( ${endLineSelectNode} +1 ))"
@@ -595,18 +671,18 @@ selected_viewer='selected_viewer'
       if [[ ${indexNo} -eq 1 ]]; then
         printf '' > "${tmpfileHeader}"
       else
-        cat "${inputFile}" | { head -n "${endLineHeader}" > "${tmpfileHeader}"; cat >/dev/null;}
+        getCachedLines "1" "${endLineHeader}" > "${tmpfileHeader}"
       fi
       wait
     )
     (
       if [[ ${indexNo} -eq 1 ]] ; then
-        cat "${inputFile}" | { sed -n "1, ${endLineSelectNode}p" > "${tmpfileSelect}"; cat >/dev/null;}
+        getCachedLines "1" "${endLineSelectNode}" > "${tmpfileSelect}"
       else
         if [[ ${indexNo} -eq ${maxNodeCnt} ]] ; then
-          cat "${inputFile}" | { tail -n +${startLineSelectNode}  > "${tmpfileSelect}"; cat >/dev/null;}
+          getCachedLines "${startLineSelectNode}" "${maxLineCnt}" > "${tmpfileSelect}"
         else
-          cat "${inputFile}" | { sed -n "${startLineSelectNode},${endLineSelectNode}p" > "${tmpfileSelect}"; cat >/dev/null;}
+          getCachedLines "${startLineSelectNode}" "${endLineSelectNode}" > "${tmpfileSelect}"
         fi
       fi
       wait
@@ -615,7 +691,7 @@ selected_viewer='selected_viewer'
       if [[ ${indexNo} -eq ${maxNodeCnt} ]] ; then
         printf '' > "${tmpfileFooter}"
       else
-        tail -n +"${startLineFooter}" "${inputFile}" > "${tmpfileFooter}"
+        getCachedLines "${startLineFooter}" "${maxLineCnt}" > "${tmpfileFooter}"
       fi
       wait
     )
@@ -654,15 +730,17 @@ selected_viewer='selected_viewer'
     dots="$(seq ${depth} | while read -r line; do printf '.'; done)"
 
     echo -e "${dots}\t${nlString}" > "${tmpfileSelect}"
-    cat "${inputFile}" | { head -n "${endLinePreviousNode}" > "${tmpfileHeader}"; cat >/dev/null;}
+    getCachedLines "1" "${endLinePreviousNode}" > "${tmpfileHeader}"
 
     if [[ ${indexNo} -eq ${maxNodeCnt} ]] ;then
       awk 1 "${inputFile}" "${tmpfileSelect}" > "${tmpfile1}"
       cat "${tmpfile1}" > "${inputFile}"
+      invalidateCache
 
     else
-      cat "${inputFile}" | { tail -n +${startLineNextNode}  > "${tmpfileFooter}"; cat >/dev/null;}
+      getCachedLines "${startLineNextNode}" "${maxLineCnt}" > "${tmpfileFooter}"
       cat "${tmpfileHeader}" "${tmpfileSelect}" "${tmpfileFooter}" > "${inputFile}"
+      invalidateCache
     fi
   }
 
@@ -699,8 +777,10 @@ selected_viewer='selected_viewer'
 
     case "${char2}" in
       'l')  sed -i -e "$tgtLine s/^\.\./\./g" "${inputFile}"
+            invalidateCache
             ;;
       'r')  sed -i -e "$tgtLine s/^/\./g" "${inputFile}"
+            invalidateCache
             ;;
       *)    echo 'err'
             exit 9
@@ -729,8 +809,9 @@ selected_viewer='selected_viewer'
 
     local indexSelectNode="$(( ${indexNo} ))"
     local selectNodeLineFromTo="$( getLineNo ${indexSelectNode} '' )"
-    local startLineSelectNode="$( echo ${selectNodeLineFromTo} | cut -d ' ' -f 1 )"
-    local endLineSelectNode="$(   echo ${selectNodeLineFromTo} | cut -d ' ' -f 2 )"
+    local selectNodeArray=($selectNodeLineFromTo)
+    local startLineSelectNode="${selectNodeArray[0]}"
+    local endLineSelectNode="${selectNodeArray[1]}"
 
     case "${char2}" in
       'u')  indexTargetNode="$(( ${indexNo} -1 ))"
@@ -740,8 +821,9 @@ selected_viewer='selected_viewer'
             endLinePreviousNode="$(( $( getLineNo ${indexTargetNode} 1 ) - 1 ))"
 
             targetNodeLineFromTo="$( getLineNo ${indexTargetNode} '' )"
-            startLineTargetNode="$( echo ${targetNodeLineFromTo} | cut -d ' ' -f 1 )"
-            endLineTargetNode="$(   echo ${targetNodeLineFromTo} | cut -d ' ' -f 2 )"
+            local targetNodeArray=($targetNodeLineFromTo)
+            startLineTargetNode="${targetNodeArray[0]}"
+            endLineTargetNode="${targetNodeArray[1]}"
 
             if [[ ${indexNo} -eq ${maxNodeCnt} ]] ; then
               startLineNextNode=''
@@ -750,11 +832,11 @@ selected_viewer='selected_viewer'
             fi
             
             (
-              cat "${inputFile}" | { head -n "${endLinePreviousNode}" > "${tmpfileHeader}"; cat >/dev/null;}
-              cat "${inputFile}" | { sed -sn "${startLineTargetNode},${endLineTargetNode}p" > "${tmpfileTarget}"; cat >/dev/null;}
-              cat "${inputFile}" | { sed -sn "${startLineSelectNode},${endLineSelectNode}p" > "${tmpfileSelect}"; cat >/dev/null;}
+              getCachedLines "1" "${endLinePreviousNode}" > "${tmpfileHeader}"
+              getCachedLines "${startLineTargetNode}" "${endLineTargetNode}" > "${tmpfileTarget}"
+              getCachedLines "${startLineSelectNode}" "${endLineSelectNode}" > "${tmpfileSelect}"
               if [[ ! "${startLineNextNode}" = '' ]] ; then 
-                tail -n +"${startLineNextNode}" "${inputFile}" > "${tmpfileFooter}"
+                getCachedLines "${startLineNextNode}" "${maxLineCnt}" > "${tmpfileFooter}"
               fi
               wait
             )
@@ -764,6 +846,7 @@ selected_viewer='selected_viewer'
               wait
             )
             cat "${tmpfile1}" "${tmpfile2}" > "${inputFile}"
+            invalidateCache
 
             ;;
 
@@ -775,24 +858,28 @@ selected_viewer='selected_viewer'
             endLinePreviousNode="$( getLineNo ${indexPreviousNode} 9 )"
 
             targetNodeLineFromTo="$( getLineNo ${indexTargetNode} '' )"
-            startLineTargetNode="$( echo ${targetNodeLineFromTo} | cut -d ' ' -f 1 )"
+            local targetNodeArray=($targetNodeLineFromTo)
+            startLineTargetNode="${targetNodeArray[0]}"
 
             if [[ ${indexNo} -eq ${maxNodeCnt} ]] ; then
-              endLineTargetNode="$(cat "${inputFile}" | wc -l )"
+
+              #endLineTargetNode="${#fileLines[@]}"
+              endLineTargetNode="$(getCachedLineCount)"
+
             else
-              endLineTargetNode="$( echo ${targetNodeLineFromTo} | cut -d ' ' -f 2 )"
+              endLineTargetNode="${targetNodeArray[1]}"
               startLineNextNode="$( getLineNo ${indexNextNode}   1 )"
             fi
             (
               if [[ ${indexNo} -eq 1 ]] ; then
                 echo '' > "${tmpfileHeader}"
               else
-                cat "${inputFile}" | { head -n "${endLinePreviousNode}" > "${tmpfileHeader}"; cat >/dev/null;}
+                getCachedLines "1" "${endLinePreviousNode}" > "${tmpfileHeader}"
               fi
-              cat "${inputFile}" | { sed -sn "${startLineTargetNode},${endLineTargetNode}p" > "${tmpfileTarget}"; cat >/dev/null;} 
-              cat "${inputFile}" | { sed -sn "${startLineSelectNode},${endLineSelectNode}p" > "${tmpfileSelect}"; cat >/dev/null;}
+              getCachedLines "${startLineTargetNode}" "${endLineTargetNode}" > "${tmpfileTarget}"
+              getCachedLines "${startLineSelectNode}" "${endLineSelectNode}" > "${tmpfileSelect}"
               if [[ ! ${startLineNextNode} = '' ]] ; then 
-                tail -n +"${startLineNextNode}" "${inputFile}" > "${tmpfileFooter}"
+                getCachedLines "${startLineNextNode}" "${maxLineCnt}" > "${tmpfileFooter}"
               fi
               wait
             )
@@ -802,6 +889,7 @@ selected_viewer='selected_viewer'
               wait
             )
             cat "${tmpfile1}" "${tmpfile2}" > "${inputFile}"
+            invalidateCache
             ;;
 
       *)    echo 'err'
@@ -822,8 +910,9 @@ selected_viewer='selected_viewer'
   function slideGroup {
 
     local SelectGroupNodeFromTo="$( getNodeNoInGroup ${indexNo} '' )"
-    local startNodeSelectGroup="$( echo ${SelectGroupNodeFromTo} | cut -d ' ' -f 1 )"
-    local endNodeSelectGroup="$(   echo ${SelectGroupNodeFromTo} | cut -d ' ' -f 2 )"
+    local selectGroupArray=($SelectGroupNodeFromTo)
+    local startNodeSelectGroup="${selectGroupArray[0]}"
+    local endNodeSelectGroup="${selectGroupArray[1]}"
 
     case "${char3}" in
       'l')  for i in $(seq "${startNodeSelectGroup}" "${endNodeSelectGroup}") ;
@@ -831,12 +920,14 @@ selected_viewer='selected_viewer'
               tgtLine="$( getLineNo ${i} 1 )"
               sed -i -e "${tgtLine} s/^\.\./\./g" "${inputFile}"
             done
+            invalidateCache
             ;;
       'r')  for i in $(seq "${startNodeSelectGroup}" "${endNodeSelectGroup}") ;
             do
               tgtLine="$( getLineNo ${i} 1 )"
               sed -i -e "${tgtLine} s/^\./\.\./g" "${inputFile}"
             done
+            invalidateCache
             ;;
       *)    echo 'err'
             read -s -n 1 c
@@ -871,8 +962,9 @@ selected_viewer='selected_viewer'
 
     : "選択グループ情報を取得" && {
       selectNodeLineFromTo="$( getNodeNoInGroup ${indexNo} '' )"
-      startLineSelectGroup="$(getLineNo $( echo $( echo ${selectNodeLineFromTo} | cut -d ' ' -f 1 ) | cut -d ' ' -f 1 ) 1 )"
-      endLineSelectGroup="$(  getLineNo $( echo $( echo ${selectNodeLineFromTo} | cut -d ' ' -f 2 ) | cut -d ' ' -f 1 ) 9 )"
+      local selectNodeArray=($selectNodeLineFromTo)
+      startLineSelectGroup="$(getLineNo ${selectNodeArray[0]} 1 )"
+      endLineSelectGroup="$(  getLineNo ${selectNodeArray[1]} 9 )"
 
     }
 
@@ -886,8 +978,9 @@ selected_viewer='selected_viewer'
         bash "${0}" "${inputFile}" 't'
         exit 0
       else
-        startLineTargetGroup="$(getLineNo $( echo $( echo ${targetNodeLineFromTo} | cut -d ' ' -f 1 ) | cut -d ' ' -f 1 ) 1 )"
-        endLineTargetGroup="$(  getLineNo $( echo $( echo ${targetNodeLineFromTo} | cut -d ' ' -f 2 ) | cut -d ' ' -f 1 ) 9 )"
+        local targetNodeArray=($targetNodeLineFromTo)
+        startLineTargetGroup="$(getLineNo ${targetNodeArray[0]} 1 )"
+        endLineTargetGroup="$(  getLineNo ${targetNodeArray[1]} 9 )"
       fi
     }
 
@@ -933,16 +1026,16 @@ selected_viewer='selected_viewer'
     }
 
    if [[ ${endLineHeaderGroup} -ne 0 ]] ; then
-     cat "${inputFile}" | { head -n "${endLineHeaderGroup}" > "${tmpfileHeader}"; cat >/dev/null;}
+     getCachedLines "1" "${endLineHeaderGroup}" > "${tmpfileHeader}"
     else
       printf '' > "${tmpfileHeader}"
     fi
 
-    cat "${inputFile}" | { sed -sn "${startLineTargetGroup},${endLineTargetGroup}p" > "${tmpfileTarget}"; cat >/dev/null;} 
-    cat "${inputFile}" | { sed -sn "${startLineSelectGroup},${endLineSelectGroup}p" > "${tmpfileSelect}"; cat >/dev/null;}
+    getCachedLines "${startLineTargetGroup}" "${endLineTargetGroup}" > "${tmpfileTarget}"
+    getCachedLines "${startLineSelectGroup}" "${endLineSelectGroup}" > "${tmpfileSelect}"
 
     if [[ ${startLineFooterGroup} -ne ${maxLineCnt} ]] ; then
-      tail -n +"${startLineFooterGroup}" "${inputFile}" > "${tmpfileFooter}"
+      getCachedLines "${startLineFooterGroup}" "${maxLineCnt}" > "${tmpfileFooter}"
     else
       printf '' > "${tmpfileFooter}"
     fi
@@ -964,6 +1057,7 @@ selected_viewer='selected_viewer'
     )
 
     cat "${tmpfile1}" "${tmpfile2}" > "${inputFile}"
+    invalidateCache
     bash "${0}" "${inputFile}" 't'
     exit 0
 
@@ -991,7 +1085,7 @@ selected_viewer='selected_viewer'
       if [[ ${endLineHeader} -eq 0 ]]; then
         printf '' > "${tmpfileHeader}"
       else
-        cat "${inputFile}" | { head -n "${endLineHeader}" > "${tmpfileHeader}"; cat >/dev/null;}
+        getCachedLines "1" "${endLineHeader}" > "${tmpfileHeader}"
       fi
       wait
     )
@@ -999,12 +1093,13 @@ selected_viewer='selected_viewer'
       if [[ ${startLineFooter} -gt ${maxLineCnt} ]] ; then
         printf '' > "${tmpfileFooter}"
       else
-        tail -n +"${startLineFooter}" "${inputFile}" > "${tmpfileFooter}"
+        getCachedLines "${startLineFooter}" "${maxLineCnt}" > "${tmpfileFooter}"
       fi
       wait
     )
 
     cat "${tmpfileHeader}" "${tmpfileFooter}" > "${inputFile}"
+    invalidateCache
 
     bash "${0}" "${inputFile}" 't'
     exit 0
@@ -1021,6 +1116,7 @@ selected_viewer='selected_viewer'
 
     local tgtLine="$( echo ${nodeStartLines[${indexNo}]} )"
     sed -i "${tgtLine}d" "${inputFile}"
+    invalidateCache
     bash "${0}" "${inputFile}" 't'
     exit 0
   }
@@ -1046,18 +1142,18 @@ selected_viewer='selected_viewer'
       if [[ ${indexNo} -eq 1 ]]; then
         printf '' > "${tmpfileHeader}"
       else
-        cat "${inputFile}" | { head -n "${endLineHeader}" > "${tmpfileHeader}"; cat >/dev/null;}
+        getCachedLines "1" "${endLineHeader}" > "${tmpfileHeader}"
       fi
       wait
     )
     (
       if [[ ${indexNo} -eq 1 ]] ; then
-        cat "${inputFile}" | { sed -n "1, ${endLineSelectGroup}p" > "${tmpfileSelect}"; cat >/dev/null;}
+        getCachedLines "1" "${endLineSelectGroup}" > "${tmpfileSelect}"
       else
         if [[ ${indexNo} -eq ${maxNodeCnt} ]] ; then
-          cat "${inputFile}" | { tail -n +${startLineSelectGroup}  > "${tmpfileSelect}"; cat >/dev/null;}
+          getCachedLines "${startLineSelectGroup}" "${maxLineCnt}" > "${tmpfileSelect}"
         else
-          cat "${inputFile}" | { sed -n "${startLineSelectGroup},${endLineSelectGroup}p" > "${tmpfileSelect}"; cat >/dev/null;}
+          getCachedLines "${startLineSelectGroup}" "${endLineSelectGroup}" > "${tmpfileSelect}"
         fi
       fi
       wait
@@ -1066,7 +1162,7 @@ selected_viewer='selected_viewer'
       if [[ ${indexNo} -eq ${maxNodeCnt} ]] ; then
         printf '' > "${tmpfileFooter}"
       else
-        tail -n +"${startLineFooter}" "${inputFile}" > "${tmpfileFooter}"
+        getCachedLines "${startLineFooter}" "${maxLineCnt}" > "${tmpfileFooter}"
       fi
       wait
     )
@@ -1078,6 +1174,7 @@ selected_viewer='selected_viewer'
     sed -i -e '$a\' "${tmpfileSelect}" #編集の結果末尾に改行がない場合'
     
     cat "${tmpfileHeader}" "${tmpfileSelect}" "${tmpfileFooter}" > "${inputFile}"
+    invalidateCache
 
     bash "${0}" "${inputFile}" 't'
     exit 0
@@ -1121,17 +1218,20 @@ selected_viewer='selected_viewer'
     if [[ ${maxNodeCnt} -eq 0 ]] ; then
       echo 'ノードがありません。先頭に第一ノードを追加します' 
       sed -i -e '1s|^|.\t1st Node\n|g' "${inputFile}"
+      invalidateCache
       read -s -n 1 c
       bash "${0}" "${inputFile}" 't'
       exit 0
     fi
 
     #全体文字数(ノードタイトル行と空行を除く)のカウント
-    allCharCount="$( \
-        sed -E "s/^\..*//g" "${inputFile}" \
-      | sed -z "s/\n//g" \
-      | wc -m \
-    )"
+    local allContentLines=""
+    for line in "${fileLines[@]}"; do
+      if [[ ! "${line}" =~ ^\. ]]; then
+        allContentLines+="${line}"
+      fi
+    done
+    allCharCount="${#allContentLines}"
 
 
     #エディタの設定
@@ -1211,8 +1311,7 @@ selected_viewer='selected_viewer'
     #バックアップ作成
     ######################################
     makeBackupActionList=('e' 'd' 'i' 'ie' 'ml' 'mr' 'md' 'mu' 'gml' 'gmr' 'gmu' 'gmd' 'c' 's')
-    printf '%s\n' "${makeBackupActionList[@]}" | grep -qx "${action}"
-    if [[ ${?} -eq 0 ]] ; then
+    if arrayContains "${action}" "${makeBackupActionList[@]}"; then
       makeBackup
     fi
 
@@ -1230,8 +1329,7 @@ selected_viewer='selected_viewer'
 
     #動作指定のチェック
     allowActionList=('h' 'e' 'd' 'gd' 'i' 'ie' 't' 'tl' 'ta' 'f' 'fl' 'fa' 'v' 'gv' 'ml' 'mr' 'md' 'mu' 'gml' 'gmr' 'gmu' 'gmd' 'j' 'gj' 'c' 'gc' 's' 'o')
-    printf '%s\n' "${allowActionList[@]}" | grep -qx "${action}"
-    if [[ ${?} -ne 0 ]] ; then
+    if ! arrayContains "${action}" "${allowActionList[@]}"; then
       echo '引数2:無効なアクションです'
       read -s -n 1 c
       return 1
@@ -1239,16 +1337,14 @@ selected_viewer='selected_viewer'
 
     unset allowActionList
     allowActionList=('e' 'd' 'gd' 'i' 'ie' 'f' 'fl' 'fa' 'v' 'gv' 'ml' 'mr' 'md' 'mu' 'gml' 'gmr' 'gmu' 'gmd' 'j' 'gj' 'c' 'gc' 's' 'o')
-    printf '%s\n' "${allowActionList[@]}" | grep -qx "${action}"
-    if [[ ${?} -eq 0 ]] ; then
+    if arrayContains "${action}" "${allowActionList[@]}"; then
       if [[ ${indexNo} = '' ]] ; then
         echo "ノードを指定してください"
         read -s -n 1 c
         return 1
       fi
     fi
-    printf '%s\n' "${allowActionList[@]}" | grep -qx "${action}"
-    if [[ ${?} -eq 0 ]] ; then
+    if arrayContains "${action}" "${allowActionList[@]}"; then
       if [[ ${indexNo} -le 0 ]] || [[ ${indexNo} -gt ${maxNodeCnt} ]] ; then
         echo "${indexNo}番目のノードは存在しません"
         read -s -n 1 c
@@ -1259,8 +1355,7 @@ selected_viewer='selected_viewer'
     #動作指定とノード番号のチェック(ノード状態の取得が必要なチェックは後続で実施)
     unset allowActionList
     allowActionList=('ml' 'gml')
-    printf '%s\n' "${allowActionList[@]}" | grep -qx "${action}"
-    if [[ ${?} -eq 0 ]] && [[ ${depth} -le 1 ]] ; then
+    if arrayContains "${action}" "${allowActionList[@]}" && [[ ${depth} -le 1 ]] ; then
       echo "ノード番号${indexNo}はこれ以上浅く(左に移動)できません"
       read -s -n 1 c
       return 1
@@ -1268,8 +1363,7 @@ selected_viewer='selected_viewer'
 
     unset allowActionList
     allowActionList=('mr' 'gmr')
-    printf '%s\n' "${allowActionList[@]}" | grep -qx "${action}"
-    if [[ ${?} -eq 0 ]] && [[ ${depth} -ge 10 ]] ; then
+    if arrayContains "${action}" "${allowActionList[@]}" && [[ ${depth} -ge 10 ]] ; then
       echo "ノード番号${indexNo}の深さは${depth}です。これ以上深く(右に移動)できません"
       read -s -n 1 c
       return 1
@@ -1277,8 +1371,7 @@ selected_viewer='selected_viewer'
 
     unset allowActionList
     allowActionList=('mu' 'gmu')
-    printf '%s\n' "${allowActionList[@]}" | grep -qx "${action}"
-    if [[ ${?} -eq 0 ]] && [[ ${indexNo} -eq 1 ]] ; then
+    if arrayContains "${action}" "${allowActionList[@]}" && [[ ${indexNo} -eq 1 ]] ; then
       echo '引数2:1番目のノードは上に移動できません'
       read -s -n 1 c
       return 1
@@ -1286,8 +1379,7 @@ selected_viewer='selected_viewer'
 
     unset allowActionList
     allowActionList=('md' 'gmd')
-    printf '%s\n' "${allowActionList[@]}" | grep -qx "${action}"
-    if [[ ${?} -eq 0 ]] && [[ ${indexNo} -ge ${maxNodeCnt} ]] ; then
+    if arrayContains "${action}" "${allowActionList[@]}" && [[ ${indexNo} -ge ${maxNodeCnt} ]] ; then
       echo "引数2:${indexNo}番目のノードは下に移動できません"
       read -s -n 1 c
       return 1

@@ -1,0 +1,149 @@
+.	Node 1	0	
+Content for node 1 with substantial text content to simulate real usage.
+
+.	Node 2	1	☑
+Content for node 2 with more text content for testing.
+
+.	Node 3	0	
+Content for node 3 with additional text for verification.
+
+.	Node 4	1	
+Content for node 4 with comprehensive text content.
+
+.	Node 5	0	
+Content for node 5 with extensive text for testing.
+
+.	Node 6	1	☑
+Content for node 6 with detailed text content.
+
+.	Node 7	0	
+Content for node 7 with substantial text for verification.
+
+.	Node 8	1	
+Content for node 8 with comprehensive content.
+
+.	Node 9	0	
+Content for node 9 with extensive text for testing.
+
+.	Node 10	1	☑
+Content for node 10 with detailed text content.
+
+.	Node 11	0	
+Content for node 11 with substantial text for verification.
+
+.	Node 12	1	
+Content for node 12 with comprehensive content.
+
+.	Node 13	0	
+Content for node 13 with extensive text for testing.
+
+.	Node 14	1	☑
+Content for node 14 with detailed text content.
+
+.	Node 15	0	
+Content for node 15 with substantial text for verification.
+
+.	Node 16	1	
+Content for node 16 with comprehensive content.
+
+.	Node 17	0	
+Content for node 17 with extensive text for testing.
+
+.	Node 18	1	☑
+Content for node 18 with detailed text content.
+
+.	Node 19	0	
+Content for node 19 with substantial text for verification.
+
+.	Node 20	1	
+Content for node 20 with comprehensive content.
+
+.	Node 21	0	
+Content for node 21 with extensive text for testing.
+
+.	Node 22	1	☑
+Content for node 22 with detailed text content.
+
+.	Node 23	0	
+Content for node 23 with substantial text for verification.
+
+.	Node 24	1	
+Content for node 24 with comprehensive content.
+
+.	Node 25	0	
+Content for node 25 with extensive text for testing.
+
+.	Node 26	1	☑
+Content for node 26 with detailed text content.
+
+.	Node 27	0	
+Content for node 27 with substantial text for verification.
+
+.	Node 28	1	
+Content for node 28 with comprehensive content.
+
+.	Node 29	0	
+Content for node 29 with extensive text for testing.
+
+.	Node 30	1	☑
+Content for node 30 with detailed text content.
+
+.	Node 31	0	
+Content for node 31 with substantial text for verification.
+
+.	Node 32	1	
+Content for node 32 with comprehensive content.
+
+.	Node 33	0	
+Content for node 33 with extensive text for testing.
+
+.	Node 34	1	☑
+Content for node 34 with detailed text content.
+
+.	Node 35	0	
+Content for node 35 with substantial text for verification.
+
+.	Node 36	1	
+Content for node 36 with comprehensive content.
+
+.	Node 37	0	
+Content for node 37 with extensive text for testing.
+
+.	Node 38	1	☑
+Content for node 38 with detailed text content.
+
+.	Node 39	0	
+Content for node 39 with substantial text for verification.
+
+.	Node 40	1	
+Content for node 40 with comprehensive content.
+
+.	Node 41	0	
+Content for node 41 with extensive text for testing.
+
+.	Node 42	1	☑
+Content for node 42 with detailed text content.
+
+.	Node 43	0	
+Content for node 43 with substantial text for verification.
+
+.	Node 44	1	
+Content for node 44 with comprehensive content.
+
+.	Node 45	0	
+Content for node 45 with extensive text for testing.
+
+.	Node 46	1	☑
+Content for node 46 with detailed text content.
+
+.	Node 47	0	
+Content for node 47 with substantial text for verification.
+
+.	Node 48	1	
+Content for node 48 with comprehensive content.
+
+.	Node 49	0	
+Content for node 49 with extensive text for testing.
+
+.	Node 50	1	☑
+Content for node 50 with detailed text content.

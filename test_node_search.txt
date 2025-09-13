@@ -1,0 +1,23 @@
+.	Root Node	0	
+Content for root node with some text content.
+
+..	Level 2 Node	1	☑
+Content for level 2 node with additional text.
+
+...	Level 3 Node	0	
+Content for level 3 node with more text content.
+
+....	Level 4 Node	1	
+Content for level 4 node with comprehensive text.
+
+..	Another Level 2 Node	0	
+Content for another level 2 node.
+
+...	Another Level 3 Node	1	☑
+Content for another level 3 node.
+
+.	Second Root Node	0	
+Content for second root node.
+
+..	Second Level 2 Node	1	
+Content for second level 2 node.
